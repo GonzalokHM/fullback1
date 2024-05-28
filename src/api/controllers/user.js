@@ -43,12 +43,11 @@ const updateUser = async (req, res, next) => {
     });
     return res.status(200).json(userUpdated);
   } catch (error) {
-    console.error('Error updating user:', error);
     return next(setError(400, "can't update Users 😱"));
   }
 };
 
-const updateUserRole = async (req, res) => {
+const updateUserRole = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { newRole } = req.body;
@@ -60,14 +59,12 @@ const updateUserRole = async (req, res) => {
     );
 
     if (!updatedUser) {
-      return res.status(404).json({ message: 'Usuario no encontrado' });
+      return next(setError(404, 'User not found'));
     }
 
     return res.status(200).json(updatedUser);
   } catch (error) {
-    return res
-      .status(500)
-      .json({ message: 'Error actualizando el rol del usuario', error });
+    return next(setError(500, 'Error updating user role'));
   }
 };
 
@@ -81,47 +78,41 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
-const createEvent = async (req, res) => {
+const createEvent = async (req, res, next) => {
   const { title, date, location, description } = req.body;
   try {
     const newEvent = new Event({ title, date, location, description });
     await newEvent.save();
     res.status(201).json(newEvent);
   } catch (error) {
-    res.status(500).json({ error: 'Error creating event' });
+    next (setError(500, 'Error creating event'));
   }
 };
 
-const confirmAttendance = async (req, res) => {
+const confirmAttendance = async (req, res, next) => {
   const { eventId } = req.params;
   const { name, email } = req.user;
   try {
-    console.log(`Confirmando asistencia para el evento ID: ${eventId}, usuario: ${name}, email: ${email}`);
     const event = await Event.findById(eventId);
     if (!event) {
-      return res.status(404).json({ error: 'Event not found' });
+      return next(setError(404, 'Event not found'));
     }
     // Busca si el asistente ya existe
     let attendee = await Attendee.findOne({ email });
 
     // Si no existe, crea un nuevo asistente
     if (!attendee) {
-      console.log('Asistente no encontrado, creando uno nuevo.');
       attendee = new Attendee({
         name,
         email,
         events: [eventId],
       });
     } else {
-      console.log('Asistente encontrado:', attendee);
       // Si existe, agrega el evento al array de eventos
       if (!attendee.events.includes(eventId)) {
-        console.log('Agregando evento a la lista de eventos del asistente.');
         attendee.events.push(eventId);
       } else {
-        return res
-          .status(400)
-          .json({ error: 'Already confirmed attendance for this event' });
+        return next(setError(400, 'Already confirmed attendance for this event'));
       }
     }
 
@@ -130,11 +121,9 @@ const confirmAttendance = async (req, res) => {
     // Popula los eventos para devolver detalles completos
     // const populatedAttendee = await attendee.populate('events');
     const populatedAttendee = await Attendee.findById(attendee._id).populate('events');
-    console.log('Asistente con eventos populados:', populatedAttendee)
     res.status(201).json(populatedAttendee);
   } catch (error) {
-    console.error('Error confirmando la asistencia:', error);
-    res.status(500).json({ error: 'Error confirming attendance' });
+    next(setError(500, 'Error confirming attendance'));
   }
 };
 
