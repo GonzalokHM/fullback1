@@ -11,4 +11,4 @@ const uploadToCloudinary = async (filePath, folder = 'fullBack1') => {
   }
 };
 
-module.exports = {uploadToCloudinary};
+module.exports = uploadToCloudinary;
