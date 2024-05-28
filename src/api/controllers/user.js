@@ -3,7 +3,7 @@ const { deleteFile } = require('../../utils/deleteFile');
 const User = require('../models/user');
 const Event = require('../models/event');
 const Attendee = require('../models/attendee');
-const uploadToCloudinary = require('../../utils/upCloudinary');
+const uploadToCloudinary = require('../../utils/UpCloudinary');
 
 const getUsers = async (req, res, next) => {
   try {
