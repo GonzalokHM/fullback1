@@ -16,7 +16,11 @@ const eventSchema = new mongoose.Schema({
   description: {
     type: String,
     required: true,
-  },
+  }, organizer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  }
 },
 { timestamps: true, collection: 'events' }
 );

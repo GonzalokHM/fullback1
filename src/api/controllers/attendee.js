@@ -1,3 +1,5 @@
+
+const { setError } = require('../../config/error');
 const Attendee = require('../models/attendee');
 
 const getAttendees = async (req, res, next) => {
@@ -19,4 +21,16 @@ const getAttendees = async (req, res, next) => {
     }
   };
 
-  module.exports = {getAttendees, getAttendeeByid}
+  const getAttendeesSortedByName = async (req, res, next) => {
+    try {
+      const attendees = await Attendee.find().sort({ name: 1 }).populate('events');
+      if (!attendees || attendees.length === 0) {
+        return next(setError(400, 'No attendees found'));
+      }
+      return res.status(200).json(attendees);
+    } catch (error) {
+      return next(setError(400, 'Error retrieving attendees'));
+    }
+  };
+
+  module.exports = {getAttendees, getAttendeeByid, getAttendeesSortedByName}

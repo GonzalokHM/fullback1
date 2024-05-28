@@ -80,8 +80,9 @@ const deleteUser = async (req, res, next) => {
 
 const createEvent = async (req, res, next) => {
   const { title, date, location, description } = req.body;
+  const organizerId = req.user._id;
   try {
-    const newEvent = new Event({ title, date, location, description });
+    const newEvent = new Event({ title, date, location, description, organizer: organizerId  });
     await newEvent.save();
     res.status(201).json(newEvent);
   } catch (error) {

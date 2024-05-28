@@ -40,12 +40,16 @@ Esta API está diseñada para la gestión de eventos y asistentes, permitiendo a
 
 - **GET** `/api/events`: Listar todos los eventos disponibles.
 - **GET** `/api/events/:id`: Obtener detalles de un evento específico.
-- **POST** `/api/user/events`: Permitir a los usuarios crear nuevos eventos (Requiere JWT).
+- **GET** `/api/events/findOrganizerByid/:organizerId`: Obtener todos los eventos que organiza un usuario en concreo.
+- **GET** `/api/events/order/sortedDate`: Obtener todos los eventos ordenados por fecha de menor a mayor.
+- **POST** `/api/user/events`: Permitir a los usuarios crear nuevos eventos, comvirtiendose en organizer del evento (Requiere JWT).
+- **POST** `/api/events/assignOrganizer`: asigna un nuevo organizador a un evento, requiere pasar "eventId", "organizerId" en el body.
 
 ### Asistentes
 
 - **GET** `/api/attendees`: Listar todos los asistentes registrados.
 - **GET** `/api/attendees/:id`: Obtener detalles de un asistente específico.
+- **GET** `/api/attendees/sortedName`: Obtener detalles de asistentes ordenados por nombre.
 - **POST** `/api/user/attendees/:eventId`: Permitir a los usuarios confirmar asistencia a un evento (Requiere JWT).
 
 ### Usuarios
