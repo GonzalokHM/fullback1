@@ -69,4 +69,4 @@ const result = await uploadToCloudinary(req.file.path, 'Avatars')
 
 ## Despliegue
 
-[store-full1 | vercel](https://full1.vercel.app/api/v1/)
+[store-full1 | vercel](https://full1.vercel.app)

@@ -1,7 +1,7 @@
 {
   "name": "fullback",
   "version": "1.0.0",
-  "description": "",
+  "description": "api attendees",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -9,7 +9,7 @@
     "seed": "node ./src/api/seed/index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "ghmdevs",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
