@@ -1,5 +1,6 @@
 const Event = require('../models/event');
 const { setError } = require('../../config/error');
+const Attendee = require('../models/attendee');
 
 
 const getEvents = async (req, res, next) => {
@@ -65,4 +66,17 @@ const getEvents = async (req, res, next) => {
     }
   };
 
-  module.exports = {getEvents, getEventByid, getEventsSortedByDate, getEventsByOrganizer, assignOrganizer}
+  const getAttendeesByEventId = async (req, res) => {
+    try {
+      const { eventId } = req.params;
+      const attendees = await Attendee.find({ events: eventId });
+      if (!attendees) {
+        return res.status(404).json({ message: 'No attendees found for this event' });
+      }
+      res.status(200).json(attendees);
+    } catch (error) {
+      res.status(500).json({ message: 'Error retrieving attendees', error });
+    }
+  };
+
+  module.exports = {getEvents, getEventByid, getEventsSortedByDate, getEventsByOrganizer, assignOrganizer, getAttendeesByEventId}
