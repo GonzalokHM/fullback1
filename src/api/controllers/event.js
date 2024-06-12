@@ -5,7 +5,7 @@ const Attendee = require('../models/attendee');
 
 const getEvents = async (req, res, next) => {
     try {
-      const events = await Event.find();
+      const events = await Event.find().populate('organizer');
       return res.status(200).json(events);
     } catch (error) {
       return next(setError(400, 'no events found'));
