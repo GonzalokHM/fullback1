@@ -20,6 +20,20 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 
+app.use((req, res, next) => {
+    console.log(`${req.method} request to ${req.url}`);
+    res.header('Access-Control-Allow-Origin', 'http://your-frontend-domain.com');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.header('Access-Control-Allow-Credentials', 'true');
+
+    if (req.method === 'OPTIONS') {
+        console.log('Handling OPTIONS request');
+        return res.status(200).end();
+    }
+
+    next();
+});
 app.use(express.json())
 
 app.use('/api', indexRouter);
