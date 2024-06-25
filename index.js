@@ -22,7 +22,7 @@ app.options('*', cors(corsOptions));
 
 app.use((req, res, next) => {
     console.log(`${req.method} request to ${req.url}`);
-    res.header('Access-Control-Allow-Origin', 'http://your-frontend-domain.com');
+    res.header('Access-Control-Allow-Origin', 'https://eventstorge.netlify.app');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     res.header('Access-Control-Allow-Credentials', 'true');
