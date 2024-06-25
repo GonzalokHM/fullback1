@@ -9,8 +9,17 @@ const app = express();
 
 connectDB();
 
+// Configurar CORS con opciones específicas
+const corsOptions = {
+  origin: 'https://eventstorge.netlify.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+};
 
-app.use(cors());
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
+
 app.use(express.json())
 
 app.use('/api', indexRouter);
