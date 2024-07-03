@@ -128,6 +128,33 @@ const confirmAttendance = async (req, res, next) => {
   }
 };
 
+const deleteAttendance = async (req, res, next) => {
+  const { eventId } = req.params;
+  const { email } = req.user;
+  try {
+    const attendee = await Attendee.findOne({ email });
+
+    if (!attendee) {
+      return next(setError(404, 'Attendee not found'));
+    }
+
+    // Filtra el evento del array de eventos del asistente
+    attendee.events = attendee.events.filter(event => event.toString() !== eventId);
+
+    // Si no queda ningún evento, elimina el asistente
+    if (attendee.events.length === 0) {
+      await Attendee.deleteOne({ _id: attendee._id });
+    } else {
+      await attendee.save();
+    }
+
+    res.status(200).json({ message: 'Attendance cancelled' });
+  } catch (error) {
+    next(setError(500, 'Error cancelling attendance'));
+  }
+};
+
+
 module.exports = {
   getUsers,
   updateUser,
@@ -135,4 +162,5 @@ module.exports = {
   deleteUser,
   createEvent,
   confirmAttendance,
+  deleteAttendance
 };
